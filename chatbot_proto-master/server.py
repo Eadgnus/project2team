@@ -20,6 +20,7 @@ app.add_middleware(
 @app.post("/test")
 async def test(request: Request):
     split_text_list = []
+    answer_list = []
     input_data = await request.json()
     print(input_data)
     # 텍스트만 파싱
@@ -35,8 +36,15 @@ async def test(request: Request):
         result = generate_question(text_list[i])
         split_text_list.append(result)
         print(split_text_list[i])
-    # return generate_question(context)
-    return split_text_list
+    for sentence in split_text_list:
+        print(sentence)
+        if type(sentence) == list:
+            sentence = str(sentence)
+        if sentence.endswith('?'):
+            answer_list.append(sentence)
+    return answer_list
+
+    # return split_text_list
 
 @app.post("/chat")
 async def test(request: Request):
